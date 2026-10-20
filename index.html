@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Log Sync</title>
+<meta name="description" content="A Chrome extension that keeps your personal work tracker up to date with your work hours and chat handle time.">
+<meta name="referrer" content="no-referrer">
+<style>
+  :root {
+    --bg: #f2f5f7; --surface: #ffffff; --ink: #0e1b2c; --muted: #4d5d70; --line: #d9e1e8;
+    --accent: #0f766e; --accent-ink: #ffffff; --soft: #e1f0ee;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b141f; --surface: #121f2d; --ink: #e9eff5; --muted: #9aabbd; --line: #243548;
+      --accent: #2dd4bf; --accent-ink: #062b27; --soft: #12302f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+  h1, h2 { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; line-height: 1.15; margin: 0; letter-spacing: -.01em; }
+  h1 { font-size: clamp(2.3rem, 7vw, 3.6rem); }
+  h2 { font-size: 1.7rem; margin-bottom: 14px; }
+  p { margin: 0 0 14px; max-width: 62ch; }
+  a { color: var(--accent); }
+  a:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  header.hero { padding: 72px 0 48px; }
+  .name { font-weight: 700; color: var(--accent); margin-bottom: 22px; }
+  .note { display: inline-block; background: var(--soft); color: var(--accent); font-weight: 700; padding: 6px 12px; border-radius: 8px; margin: 0 0 22px; }
+  .lead { font-size: 1.2rem; color: var(--muted); margin: 20px 0 30px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block; padding: 13px 22px; border-radius: 10px; font-weight: 700; text-decoration: none;
+    background: var(--accent); color: var(--accent-ink); border: 2px solid var(--accent);
+  }
+  .btn.alt { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn:hover { filter: brightness(1.08); }
+
+  section { padding: 44px 0; border-top: 1px solid var(--line); }
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 14px; }
+  ol.steps li { counter-increment: s; display: grid; grid-template-columns: 38px 1fr; gap: 14px; align-items: start; }
+  ol.steps li::before {
+    content: counter(s); width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--soft); color: var(--accent); font-weight: 700;
+  }
+  ol.steps strong { display: block; }
+  ol.steps span { color: var(--muted); }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+  .panel .btn { margin-top: 6px; }
+  ul.plain { padding-left: 20px; margin: 0 0 14px; max-width: 62ch; }
+  ul.plain li { margin-bottom: 6px; }
+
+  #privacy h3 { font-size: 1.05rem; margin: 22px 0 6px; }
+  #privacy p, #privacy li { color: var(--muted); }
+  footer { padding: 32px 0 56px; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="name">Work Log Sync</div>
+    <h1>Your work hours, logged without typing.</h1>
+    <p class="lead">A Chrome extension that copies your work time and chat handle time into your personal work tracker, every minute, while you work.</p>
+    <p class="note">Works with Zomans only, for now.</p>
+    <div class="actions">
+      <a class="btn" href="https://script.google.com/a/macros/niftel.org/s/AKfycby1LoXuKpM-vEp7qBqQIg_kmsL9yOCzYadoHwk4sbNH0Fafu0peps0qspJ-HSlzZdrWZQ/exec" target="_blank" rel="noopener noreferrer">Open the tracker</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <h2>How to get started</h2>
+      <ol class="steps">
+        <li><div><strong>Open the tracker</strong><span>Use the button above and keep the tracker open in one browser tab. The extension writes your hours into it.</span></div></li>
+        <li><div><strong>Add the extension to Chrome</strong><span>Install Work Log Sync from the Chrome Web Store link you were given, and pin it to your toolbar so the badge shows your hours today.</span></div></li>
+        <li><div><strong>Log in to Zomans</strong><span>Stay logged in as usual. Your hours update on their own, and each closed chat adds its handle time.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>The tracker</h2>
+      <div class="panel">
+        <p>The extension works with a personal tracker web page. It shows your daily work time, average handle time, and history by day and month. You need the tracker open for the extension to update it.</p>
+        <a class="btn" href="https://script.google.com/a/macros/niftel.org/s/AKfycby1LoXuKpM-vEp7qBqQIg_kmsL9yOCzYadoHwk4sbNH0Fafu0peps0qspJ-HSlzZdrWZQ/exec" target="_blank" rel="noopener noreferrer">Open the tracker</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Where it works</h2>
+      <p>Right now the extension works only with Zomans (external.zomans.com). It reads your hours from your own logged-in Zomans session, so you need a Zomans account. Other websites are not supported.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>What it does</h2>
+      <ul class="plain">
+        <li>Shows your work time for a 6 AM to 6 AM work day.</li>
+        <li>Checks for new hours every minute and updates your tracker.</li>
+        <li>Measures handle time for each chat, from when it lands to when you close it. This resets at midnight.</li>
+        <li>Lets you sync yesterday, this week, last week, this month, or last month by hand.</li>
+        <li>Follows your light or dark mode setting.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <h2>Privacy policy</h2>
+      <p>Last updated: October 20, 2026</p>
+      <p>Work Log Sync copies your own work-time and chat handle-time data from Zomans into your own personal work tracker. This policy explains what it accesses and what happens to that data.</p>
+
+      <h3>What the extension accesses</h3>
+      <ul class="plain">
+        <li>Your work-time data, read with your existing logged-in session.</li>
+        <li>Chat assigned and closed events seen while a Zomans page is open, used to calculate handle time. Chat IDs are turned into temporary tokens inside the page and are never stored or sent anywhere.</li>
+        <li>Your tracker page, where the extension writes your work-time and handle-time values.</li>
+      </ul>
+
+      <h3>What is stored</h3>
+      <p>A small amount of data stays on your device in Chrome extension storage: today's work-time totals, today's handle-time entries, sync status, and your settings. Handle-time entries are kept for the current day only.</p>
+
+      <h3>What is not done</h3>
+      <ul class="plain">
+        <li>No data is sent to the developer or to any third-party server. There is no backend and no analytics.</li>
+        <li>No data is sold, shared, or used for advertising.</li>
+        <li>No remote code is loaded. All code ships inside the extension.</li>
+      </ul>
+
+      <h3>Your control</h3>
+      <p>Turn off Auto-update in the extension popup, or remove the extension at any time. Removing it deletes its stored data.</p>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Work Log Sync is an independent tool and is not an official product of Zomans or any employer.</div>
+</footer>
+
+</body>
+</html>
